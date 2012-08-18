@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Javascript .htpasswd Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="hero-unit">
+        <h1>JavaScript <tt>.htpasswd</tt>!</h1>
+        <p>Simple and (probably secure) way to generate your <tt>.htpasswd</tt> entries in the browser.</p>
+
+        <div class="row">
+          <form id="hthasher">
+          <div class="span3">
+            <h2>Type Your Credentials!</h2>
+             <input name="name" type="text" placeholder="Username&hellip;" class="span3">
+             <input name="pass" type="password" placeholder="Password&hellip;" class="span3">
+         </div>
+          <div class="span3">
+            <h2>Choose Your Algorithm!</h2>
+             <select class="span3" id="algorithms">
+             </select>
+          </div>
+          <div class="span4">
+            <h2>Enjoy Your Hashed Password!</h2>
+            <pre class="result">&nbsp;</pre>
+            <button class="btn btn-large btn-primary" id="hash">Hash it!</button>
+          </div>
+          </form>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; <a href="http://plaes.org">Priit Laes</a> 2012</p>
+      </footer>
+    </div>
+  <script src="js/jquery-1.8.0.min.js"></script>
+  <script>
+  function algo_plain(name, pass) {
+    return name + ':' + pass;
+  }
+  $(function() {
+    // Our supported algorithms
+    var ALGORITHMS = {
+      'plain': ['Plain Text / No hashing', algo_plain]
+    };
+    var algo_el = $('#algorithms');
+    for (var id in ALGORITHMS) {
+      algo_el.append('<option value="' + id + '">' + ALGORITHMS[id][0] + '</option>');
+    }
+
+    $('#hash').click(function(event) {
+      event.preventDefault();
+      var algo = $('#hthasher select').val();
+      var name = $('#hthasher input[name=name]').val();
+      var pass = $('#hthasher input[name=pass]').val();
+      if (algo in ALGORITHMS) {
+        $('pre.result').html(ALGORITHMS[algo][1](name, pass))
+      }
+    });
+  });
+  </script>
+  </body>
+</html>
